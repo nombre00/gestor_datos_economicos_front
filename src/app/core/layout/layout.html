@@ -1,0 +1,24 @@
+<div class="layout">
+  <aside class="sidebar">
+    <h1 class="sidebar__titulo">Deuda Pública Chile</h1>
+    <nav>
+      <a routerLink="/" routerLinkActive="activo" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+
+      <span class="sidebar__seccion">Composición</span>
+      <a routerLink="/composicion/moneda" routerLinkActive="activo">Por Moneda</a>
+      <a routerLink="/composicion/acreedor" routerLinkActive="activo">Por Acreedor</a>
+
+      <span class="sidebar__seccion">Tenedores</span>
+      <a routerLink="/tenedores/gobierno" routerLinkActive="activo">Bonos de Gobierno</a>
+      <a routerLink="/tenedores/plazo" routerLinkActive="activo">Corto vs. Largo Plazo</a>
+
+      <span class="sidebar__seccion">Bonos</span>
+      <a routerLink="/bonos/externos" routerLinkActive="activo">Bonos Externos</a>
+      <a routerLink="/bonos/locales" routerLinkActive="activo">Bonos Locales</a>
+    </nav>
+  </aside>
+
+  <main class="contenido">
+    <router-outlet></router-outlet>
+  </main>
+</div>
