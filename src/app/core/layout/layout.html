@@ -16,6 +16,9 @@
       <a routerLink="/bonos/externos" routerLinkActive="activo">Bonos Externos</a>
       <a routerLink="/bonos/locales" routerLinkActive="activo">Bonos Locales</a>
     </nav>
+    <button class="sidebar__tema" (click)="tema.alternar()">
+      {{ tema.esOscuro() ? '☀️ Modo claro' : '🌙 Modo oscuro' }}
+    </button>
   </aside>
 
   <main class="contenido">

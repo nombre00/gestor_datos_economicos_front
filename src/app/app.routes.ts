@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { LayoutComponent } from './core/layout/layout';
+import { Layout } from './core/layout/layout';
 import { Home } from './features/home/home';
 import { PorMoneda } from './features/composicion/por-moneda/por-moneda';
 import { PorAcreedor } from './features/composicion/por-acreedor/por-acreedor';
@@ -11,7 +11,7 @@ import { BonosLocales } from './features/bonos/bonos-locales/bonos-locales';
 export const routes: Routes = [
   {
     path: '',
-    component: LayoutComponent,
+    component: Layout,
     children: [
       { path: '', component: Home },
       { path: 'composicion/moneda', component: PorMoneda },

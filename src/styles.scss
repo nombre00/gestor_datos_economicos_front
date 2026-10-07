@@ -8,6 +8,15 @@
   --color-acento: #2563eb;
 }
 
+:root.dark-theme {
+  --color-fondo: #121212;
+  --color-fondo-sidebar: #1e1e1e;
+  --color-texto: #e8e8e8;
+  --color-texto-secundario: #a0a0a0;
+  --color-borde: #333333;
+  --color-acento: #60a5fa;
+}
+
 body {
   margin: 0;
   background-color: var(--color-fondo);
