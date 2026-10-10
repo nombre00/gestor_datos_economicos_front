@@ -1,6 +1,12 @@
-<app-area-apilada
-  [categorias]="categorias"
-  [series]="series"
-  titulo="Gráfico de prueba"
-  etiquetaY="Valor de prueba"
-/>
+@if (datos(); as d) {
+  <app-lineas
+    [categorias]="d.categorias"
+    [series]="d.series"
+    titulo="Evolución de la deuda bruta y neta"
+    etiquetaY="Millones de USD"
+  />
+} @else if (datos() === null) {
+  <p>No se pudo cargar el gráfico. ¿Está corriendo el backend?</p>
+} @else {
+  <p>Cargando…</p>
+}

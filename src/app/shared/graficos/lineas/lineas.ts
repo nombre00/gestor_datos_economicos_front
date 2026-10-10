@@ -3,26 +3,26 @@ import { NgxEchartsDirective } from 'ngx-echarts';
 import type { EChartsCoreOption } from 'echarts/core';
 import { ThemeService } from '../../../core/services/theme';
 
-export interface SerieGrafico {
+export interface SerieLineas {
   nombre: string;
-  datos: number[];
+  datos: (number | null)[];
 }
 
 @Component({
-  selector: 'app-area-apilada',
+  selector: 'app-lineas',
   imports: [NgxEchartsDirective],
-  templateUrl: './area-apilada.html',
-  styleUrl: './area-apilada.scss',
+  templateUrl: './lineas.html',
+  styleUrl: './lineas.scss',
 })
-export class AreaApilada {
+export class Lineas {
   readonly categorias = input.required<string[]>();
-  readonly series = input.required<SerieGrafico[]>();
+  readonly series = input.required<SerieLineas[]>();
   readonly titulo = input<string>('');
   readonly etiquetaY = input<string>('');
 
   private readonly tema = inject(ThemeService);
 
-    readonly opciones = computed<EChartsCoreOption>(() => {
+  readonly opciones = computed<EChartsCoreOption>(() => {
     const oscuro = this.tema.esOscuro();
     const colorTexto = oscuro ? '#e8e8e8' : '#1a1a1a';
     const colorLinea = oscuro ? '#333333' : '#e0e0e0';
@@ -41,10 +41,9 @@ export class AreaApilada {
         icon: 'roundRect',
         textStyle: { color: colorTexto },
       },
-      grid: { left: 90, right: 20, top: 60, bottom: 110 },
+      grid: { left: 90, right: 20, top: 60, bottom: 70 },
       xAxis: {
         type: 'category',
-        boundaryGap: false,
         data: this.categorias(),
         axisLine: { lineStyle: { color: colorLinea } },
       },
@@ -58,8 +57,6 @@ export class AreaApilada {
       series: this.series().map((s) => ({
         name: s.nombre,
         type: 'line',
-        stack: 'total',
-        areaStyle: {},
         showSymbol: false,
         data: s.datos,
       })),

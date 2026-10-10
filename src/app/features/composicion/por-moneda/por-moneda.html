@@ -1,1 +1,14 @@
-<p>por-moneda works!</p>
+<h2>Composición por moneda</h2>
+
+@if (datos(); as d) {
+  <app-area-apilada
+    [categorias]="d.categorias"
+    [series]="d.series"
+    titulo="Deuda bruta por moneda"
+    etiquetaY="Millones de USD"
+  />
+} @else if (datos() === null) {
+  <p>No se pudo cargar el gráfico. ¿Está corriendo el backend?</p>
+} @else {
+  <p>Cargando…</p>
+}

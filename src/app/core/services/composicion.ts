@@ -20,4 +20,8 @@ export class ComposicionService {
   obtenerPorAcreedor(): Observable<DatosGraficoApi> {
     return this.http.get<DatosGraficoApi>(`${this.urlBase}/composicion/acreedor/`);
   }
+
+  obtenerPorMoneda(): Observable<DatosGraficoApi> {
+    return this.http.get<DatosGraficoApi>(`${this.urlBase}/composicion/moneda/`);
+  }
 }
