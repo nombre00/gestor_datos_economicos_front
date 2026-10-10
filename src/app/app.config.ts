@@ -6,9 +6,10 @@ import * as echarts from 'echarts/core';
 import { LineChart } from 'echarts/charts';
 import { GridComponent, TooltipComponent, LegendComponent, TitleComponent } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
+import { provideHttpClient } from '@angular/common/http';
 
 echarts.use([LineChart, GridComponent, TooltipComponent, LegendComponent, TitleComponent, CanvasRenderer]);
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideBrowserGlobalErrorListeners(), provideRouter(routes), provideEchartsCore({ echarts })],
+  providers: [provideBrowserGlobalErrorListeners(), provideRouter(routes), provideEchartsCore({ echarts }), provideHttpClient()],
 };

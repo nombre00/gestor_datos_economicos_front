@@ -1,9 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, of } from 'rxjs';
+import { AreaApilada } from '../../../shared/graficos/area-apilada/area-apilada';
+import { ComposicionService } from '../../../core/services/composicion';
 
 @Component({
-  imports: [],
   selector: 'app-por-acreedor',
-  styleUrl: './por-acreedor.scss',
+  imports: [AreaApilada],
   templateUrl: './por-acreedor.html',
+  styleUrl: './por-acreedor.scss',
 })
-export class PorAcreedor {}
+export class PorAcreedor {
+  private readonly servicio = inject(ComposicionService);
+
+  // undefined = cargando, null = error, objeto = datos listos
+  readonly datos = toSignal(
+    this.servicio.obtenerPorAcreedor().pipe(catchError(() => of(null))),
+  );
+}

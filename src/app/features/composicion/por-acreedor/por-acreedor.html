@@ -1,1 +1,14 @@
-<p>por-acreedor works!</p>
+<h2>Composición por acreedor</h2>
+
+@if (datos(); as d) {
+  <app-area-apilada
+    [categorias]="d.categorias"
+    [series]="d.series"
+    titulo="Deuda bruta por acreedor"
+    etiquetaY="Millones de USD"
+  />
+} @else if (datos() === null) {
+  <p>No se pudo cargar el gráfico. ¿Está corriendo el backend?</p>
+} @else {
+  <p>Cargando…</p>
+}
