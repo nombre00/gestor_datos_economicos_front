@@ -1,1 +1,21 @@
-<p>gobierno works!</p>
+<h2>Tenedores de Bonos de Gobierno</h2>
+
+@if (datos(); as d) {
+  <app-area-apilada
+    [categorias]="d.categorias"
+    [series]="d.series"
+    titulo="Quién tiene los bonos de Gobierno (monto)"
+    etiquetaY="Miles de millones de CLP"
+  />
+  <app-area-apilada
+    [categorias]="d.categorias"
+    [series]="d.series"
+    modo="porcentaje"
+    titulo="Participación de cada tenedor"
+    etiquetaY="% del total"
+  />
+} @else if (datos() === null) {
+  <p>No se pudo cargar el gráfico. ¿Está corriendo el backend?</p>
+} @else {
+  <p>Cargando…</p>
+}

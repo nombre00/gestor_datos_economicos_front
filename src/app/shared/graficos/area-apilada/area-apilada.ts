@@ -19,10 +19,26 @@ export class AreaApilada {
   readonly series = input.required<SerieGrafico[]>();
   readonly titulo = input<string>('');
   readonly etiquetaY = input<string>('');
+  readonly modo = input<'absoluto' | 'porcentaje'>('absoluto');
 
   private readonly tema = inject(ThemeService);
 
-    readonly opciones = computed<EChartsCoreOption>(() => {
+  // En modo porcentaje, cada valor pasa a ser su % del total de esa categoría
+  private readonly seriesMostradas = computed<SerieGrafico[]>(() => {
+    const series = this.series();
+    if (this.modo() === 'absoluto') {
+      return series;
+    }
+    const totales = this.categorias().map((_, i) =>
+      series.reduce((suma, s) => suma + s.datos[i], 0),
+    );
+    return series.map((s) => ({
+      nombre: s.nombre,
+      datos: s.datos.map((valor, i) => (totales[i] > 0 ? (valor / totales[i]) * 100 : 0)),
+    }));
+  });
+
+  readonly opciones = computed<EChartsCoreOption>(() => {
     const oscuro = this.tema.esOscuro();
     const colorTexto = oscuro ? '#e8e8e8' : '#1a1a1a';
     const colorLinea = oscuro ? '#333333' : '#e0e0e0';
@@ -35,7 +51,11 @@ export class AreaApilada {
         left: 'center',
         textStyle: { color: colorTexto },
       },
-      tooltip: { trigger: 'axis' },
+      tooltip: {
+        trigger: 'axis',
+        valueFormatter: (valor: unknown) =>
+          Number(valor).toLocaleString('es-CL', { maximumFractionDigits: 1 }),
+      },
       legend: {
         bottom: 0,
         icon: 'roundRect',
@@ -53,9 +73,13 @@ export class AreaApilada {
         name: this.etiquetaY(),
         nameLocation: 'middle',
         nameGap: 65,
+        max: this.modo() === 'porcentaje' ? 100 : undefined,
+        axisLabel: {
+          formatter: (valor: unknown) => Number(valor).toLocaleString('es-CL'),
+        },
         splitLine: { lineStyle: { color: colorLinea } },
       },
-      series: this.series().map((s) => ({
+      series: this.seriesMostradas().map((s) => ({
         name: s.nombre,
         type: 'line',
         stack: 'total',

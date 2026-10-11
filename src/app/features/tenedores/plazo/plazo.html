@@ -1,1 +1,21 @@
-<p>plazo works!</p>
+<h2>Corto vs. largo plazo</h2>
+
+@if (datos(); as d) {
+  <app-area-apilada
+    [categorias]="d.categorias"
+    [series]="d.series"
+    titulo="Deuda total por plazo (monto)"
+    etiquetaY="Miles de millones de CLP"
+  />
+  <app-area-apilada
+    [categorias]="d.categorias"
+    [series]="d.series"
+    modo="porcentaje"
+    titulo="Participación de cada plazo"
+    etiquetaY="% del total"
+  />
+} @else if (datos() === null) {
+  <p>No se pudo cargar el gráfico. ¿Está corriendo el backend?</p>
+} @else {
+  <p>Cargando…</p>
+}
