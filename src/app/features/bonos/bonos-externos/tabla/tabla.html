@@ -1,1 +1,58 @@
-<p>tabla works!</p>
+<section class="tabla-bonos">
+  <div class="tabla-bonos__cabecera">
+    <h2>Detalle de bonos</h2>
+    <label class="tabla-bonos__filtro">
+      <input type="checkbox" [checked]="soloVigentes()" (change)="alternarVigentes($event)" />
+      Solo vigentes
+    </label>
+  </div>
+
+  @if (datos() === undefined) {
+    <p class="estado">Cargando…</p>
+  } @else if (datos() === null) {
+    <p class="estado">No se pudieron cargar los bonos.</p>
+  } @else {
+    <div class="tabla-bonos__contenedor">
+      <table>
+        <thead>
+          <tr>
+            <th>Bono</th>
+            <th>Moneda</th>
+            <th>Emisión</th>
+            <th>Vencimiento</th>
+            <th class="num">Monto (millones)</th>
+            <th>Tasa carátula</th>
+            <th class="num">Spread (pb)</th>
+            <th>Vigencia</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (b of filas(); track b.nombre_bono + b.fecha_emision) {
+            <tr>
+              <td>
+                {{ b.nombre_bono }}
+                @if (b.es_reapertura) {
+                  <span class="etiqueta">Reapertura</span>
+                }
+              </td>
+              <td>{{ b.moneda.toUpperCase() }}</td>
+              <td>{{ fecha(b.fecha_emision) }}</td>
+              <td>{{ fecha(b.fecha_vencimiento) }}</td>
+              <td class="num">{{ numero(b.monto) }}</td>
+              <td>{{ b.tasa_caratula }}</td>
+              <td class="num">
+                {{ numero(b.spread) }}
+                @if (b.spread_nota) {
+                  <sup [title]="'Referencia: ' + b.spread_nota">*</sup>
+                }
+              </td>
+              <td>{{ b.vigencia_etiqueta }}</td>
+            </tr>
+          } @empty {
+            <tr><td colspan="8" class="estado">Sin bonos para mostrar.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

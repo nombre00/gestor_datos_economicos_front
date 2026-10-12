@@ -1,1 +1,12 @@
-<p>grafico-spread works!</p>
+@if (puntos(); as p) {
+  <app-dispersion
+    [puntos]="p"
+    titulo="Spread de emisión según plazo"
+    etiquetaX="Plazo al emitir (años)"
+    etiquetaY="Spread (pb)"
+    etiquetaColor="Año de emisión" />
+} @else if (puntos() === null) {
+  <p class="estado">No se pudo cargar el spread.</p>
+} @else {
+  <p class="estado">Cargando…</p>
+}

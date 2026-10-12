@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
 
+import { GraficoSpread } from './grafico-spread/grafico-spread';
+import { GraficoVencimientos } from './grafico-vencimientos/grafico-vencimientos';
+import { Tabla } from './tabla/tabla';
+
 @Component({
-  imports: [],
   selector: 'app-bonos-externos',
-  styleUrl: './bonos-externos.scss',
+  standalone: true,
+  imports: [GraficoVencimientos, GraficoSpread, Tabla],
   templateUrl: './bonos-externos.html',
+  styleUrl: './bonos-externos.scss',
 })
 export class BonosExternos {}
