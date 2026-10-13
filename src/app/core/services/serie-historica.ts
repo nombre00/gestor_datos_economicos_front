@@ -12,6 +12,21 @@ export interface EvolucionApi {
   series: SerieHistoricaApi[];
 }
 
+export interface CorteDeudaApi {
+  fecha_corte: string;
+  es_corte_parcial: boolean;
+  monto_millones_usd: number;
+  pct_pib: number | null;
+}
+
+export interface ResumenDeudaApi {
+  bruta: CorteDeudaApi;
+  neta: CorteDeudaApi | null;
+  cambio_bruta: { puntos: number; desde: string; hasta: string } | null;
+  minimo_bruta: { pct_pib: number; anio: number } | null;
+}
+
+
 @Injectable({ providedIn: 'root' })
 export class SerieHistoricaService {
   private readonly http = inject(HttpClient);
@@ -21,5 +36,9 @@ export class SerieHistoricaService {
     return this.http.get<EvolucionApi>(`${this.urlBase}/serie-historica/`, {
       params: { moneda },
     });
+  }
+
+  obtenerResumen(): Observable<ResumenDeudaApi> {
+    return this.http.get<ResumenDeudaApi>('http://localhost:8000/api/serie-historica/resumen/');
   }
 }

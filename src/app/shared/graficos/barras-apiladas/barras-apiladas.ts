@@ -7,6 +7,7 @@ import { ThemeService } from '../../../core/services/theme';
 export interface SerieBarras {
   nombre: string;
   datos: (number | null)[];
+  color?: string;
 }
 
 @Component({
@@ -61,6 +62,7 @@ export class BarrasApiladas {
         type: 'bar' as const,
         stack: this.apilar() ? 'total' : undefined,
         data: s.datos,
+        itemStyle: s.color ? { color: s.color } : undefined,
         emphasis: { focus: 'series' as const },
       })),
     };

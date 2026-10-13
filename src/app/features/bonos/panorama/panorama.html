@@ -1,0 +1,47 @@
+<h1>Panorama de la deuda en bonos</h1>
+
+@if (datos(); as d) {
+  <p class="nota">
+    Bonos vigentes (externos y locales) valorizados en pesos a la fecha de corte:
+    UF ${{ pesos(d.indicadores.uf.valor) }} ({{ fecha(d.indicadores.uf.fecha) }}),
+    dólar ${{ pesos(d.indicadores.dolar.valor) }} ({{ fecha(d.indicadores.dolar.fecha) }}),
+    euro ${{ pesos(d.indicadores.euro.valor) }} ({{ fecha(d.indicadores.euro.fecha) }}).
+  </p>
+
+  <section class="cifras">
+    <div class="cifra cifra--destacada">
+      <span class="cifra__etiqueta">Total vigente</span>
+      <span class="cifra__valor">{{ billones(d.cifras.total) }}</span>
+      <span class="cifra__detalle">billones de CLP</span>
+    </div>
+
+    @for (t of d.cifras.tramos; track t.anios) {
+      <div class="cifra">
+        <span class="cifra__etiqueta">Vence en {{ t.anios }} {{ t.anios === 1 ? 'año' : 'años' }}</span>
+        <span class="cifra__valor">{{ porcentaje(t.pct) }}%</span>
+        <span class="cifra__detalle">{{ billones(t.monto) }} billones de CLP</span>
+      </div>
+    }
+
+    <div class="cifra">
+      <span class="cifra__etiqueta">Vida media</span>
+      <span class="cifra__valor">{{ porcentaje(d.cifras.vida_media) }}</span>
+      <span class="cifra__detalle">años (ponderada por monto)</span>
+    </div>
+  </section>
+
+  <app-barras-apiladas
+    [categorias]="d.vencimientos.categorias"
+    [series]="seriesVencimientos()"
+    titulo="Monto que vence por año"
+    etiquetaY="Millones de CLP (a fecha de corte)" />
+
+  <section class="composicion">
+    <app-dona [datos]="donaMoneda()" titulo="Stock vigente por moneda" unidad="millones de CLP" />
+    <app-dona [datos]="donaMercado()" titulo="Stock vigente por mercado" unidad="millones de CLP" />
+  </section>
+} @else if (datos() === null) {
+  <p class="estado">No se pudo cargar el panorama.</p>
+} @else {
+  <p class="estado">Cargando…</p>
+}

@@ -16,12 +16,22 @@ export class Tabla {
   datos = toSignal(this.bonos.obtenerExternos().pipe(catchError(() => of(null))));
 
   soloVigentes = signal(true);
+  
 
   filas = computed(() => {
     const d = this.datos();
     if (!d) return [];
-    return this.soloVigentes() ? d.filter((b) => b.vigencia === 'vigente') : d;
+    if (!this.soloVigentes()) return d;
+    const hoy = this.hoyIso();
+    return d.filter((b) => b.vigencia === 'vigente' && b.fecha_vencimiento >= hoy);
   });
+
+  private hoyIso(): string {
+    const f = new Date();
+    const mes = String(f.getMonth() + 1).padStart(2, '0');
+    const dia = String(f.getDate()).padStart(2, '0');
+    return `${f.getFullYear()}-${mes}-${dia}`;
+  }
 
   private formatoNumero = new Intl.NumberFormat('es-CL', { maximumFractionDigits: 2 });
 

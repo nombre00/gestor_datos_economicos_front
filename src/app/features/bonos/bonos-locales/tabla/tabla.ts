@@ -20,8 +20,18 @@ export class Tabla {
   filas = computed(() => {
     const d = this.datos();
     if (!d) return [];
-    return this.soloVigentes() ? d.filter((b) => b.status === 'vigente') : d;
+    if (!this.soloVigentes()) return d;
+    const hoy = this.hoyIso();
+    return d.filter((b) => b.status === 'vigente' && b.fecha_vencimiento >= hoy);
   });
+
+  /** Fecha local de hoy en formato AAAA-MM-DD, igual que las fechas que manda la API */
+  private hoyIso(): string {
+    const f = new Date();
+    const mes = String(f.getMonth() + 1).padStart(2, '0');
+    const dia = String(f.getDate()).padStart(2, '0');
+    return `${f.getFullYear()}-${mes}-${dia}`;
+  }
 
   private formatoNumero = new Intl.NumberFormat('es-CL', { maximumFractionDigits: 2 });
 

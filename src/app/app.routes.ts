@@ -7,6 +7,7 @@ import { Gobierno } from './features/tenedores/gobierno/gobierno';
 import { Plazo } from './features/tenedores/plazo/plazo';
 import { BonosExternos } from './features/bonos/bonos-externos/bonos-externos';
 import { BonosLocales } from './features/bonos/bonos-locales/bonos-locales';
+import { Panorama } from './features/bonos/panorama/panorama';
 
 export const routes: Routes = [
   {
@@ -20,6 +21,7 @@ export const routes: Routes = [
       { path: 'tenedores/plazo', component: Plazo },
       { path: 'bonos/externos', component: BonosExternos },
       { path: 'bonos/locales', component: BonosLocales },
+      { path: 'bonos/panorama', component: Panorama },
     ],
   },
 ];

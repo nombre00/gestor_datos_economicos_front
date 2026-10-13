@@ -1,1 +1,61 @@
-<p>resumen-general works!</p>
+@if (resumen(); as r) {
+  <section class="cifras">
+    <div class="cifra cifra--destacada">
+      <span class="cifra__etiqueta">Deuda bruta</span>
+      <span class="cifra__valor">{{ pct(r.bruta.pct_pib) }}</span>
+      <span class="cifra__detalle">
+        del PIB · {{ millonesUsd(r.bruta.monto_millones_usd) }} millones de USD
+      </span>
+      <span class="cifra__fecha">
+        al {{ fecha(r.bruta.fecha_corte) }}{{ r.bruta.es_corte_parcial ? ' (corte parcial)' : '' }}
+      </span>
+    </div>
+
+    @if (r.neta; as n) {
+      <div class="cifra">
+        <span class="cifra__etiqueta">Deuda neta</span>
+        <span class="cifra__valor">{{ pct(n.pct_pib) }}</span>
+        <span class="cifra__detalle">
+          del PIB · {{ millonesUsd(n.monto_millones_usd) }} millones de USD
+        </span>
+        <span class="cifra__fecha">al {{ fecha(n.fecha_corte) }}</span>
+      </div>
+    }
+
+    @if (r.cambio_bruta; as c) {
+      <div class="cifra">
+        <span class="cifra__etiqueta">Cambio de la deuda bruta</span>
+        <span class="cifra__valor">{{ puntos(c.puntos) }}</span>
+        <span class="cifra__detalle">del PIB</span>
+        <span class="cifra__fecha">{{ fecha(c.desde) }} → {{ fecha(c.hasta) }}</span>
+      </div>
+    }
+
+    @if (r.minimo_bruta; as m) {
+      <div class="cifra">
+        <span class="cifra__etiqueta">Mínimo histórico</span>
+        <span class="cifra__valor">{{ pct(m.pct_pib) }}</span>
+        <span class="cifra__detalle">del PIB (deuda bruta)</span>
+        <span class="cifra__fecha">en {{ m.anio }}</span>
+      </div>
+    }
+
+    <div class="cifra">
+      <span class="cifra__etiqueta">Bonos que vencen en 12 meses</span>
+      @if (vence12Meses(); as t) {
+        <span class="cifra__valor">{{ billones(t.monto) }}</span>
+        <span class="cifra__detalle">billones de CLP </span>
+        <span class="cifra__detalle">{{ pct(t.pct) }} de los bonos </span>
+      } @else if (vence12Meses() === null) {
+        <span class="cifra__detalle">No disponible</span>
+      } @else {
+        <span class="cifra__detalle">Cargando…</span>
+      }
+      <a class="cifra__link" routerLink="/bonos/panorama">Ver panorama de bonos →</a>
+    </div>
+  </section>
+} @else if (resumen() === null) {
+  <p class="estado">No se pudo cargar el resumen.</p>
+} @else {
+  <p class="estado">Cargando…</p>
+}

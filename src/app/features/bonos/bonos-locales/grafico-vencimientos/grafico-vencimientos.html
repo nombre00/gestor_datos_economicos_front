@@ -1,7 +1,7 @@
 @if (datos(); as d) {
   <app-barras-apiladas
     [categorias]="d.categorias"
-    [series]="d.series"
+    [series]="seriesClp()"
     titulo="Monto vigente que vence por año"
     [etiquetaY]="etiquetaClp()" />
   <app-barras-apiladas

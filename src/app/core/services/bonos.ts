@@ -60,6 +60,30 @@ export interface PuntoTasaApi {
   anio_emision: number;
 }
 
+export interface IndicadorCorteApi {
+  valor: number;
+  fecha: string;
+}
+
+export interface DatoComposicionApi {
+  nombre: string;
+  valor: number;
+}
+
+export interface PanoramaApi {
+  fecha_corte: string;
+  indicadores: { uf: IndicadorCorteApi; dolar: IndicadorCorteApi; euro: IndicadorCorteApi };
+  vencimientos: DatosGraficoApi;
+  composicion_moneda: DatoComposicionApi[];
+  composicion_mercado: DatoComposicionApi[];
+  cifras: {
+    total: number;
+    tramos: { anios: number; monto: number; pct: number }[];
+    vida_media: number;
+  };
+}
+
+
 
 @Injectable({ providedIn: 'root' })
 export class BonosService {
@@ -88,5 +112,9 @@ export class BonosService {
 
   obtenerTasaLocales(): Observable<PuntoTasaApi[]> {
     return this.http.get<PuntoTasaApi[]>(`${this.base}/locales/tasa/`);
+  }
+
+  obtenerPanorama(): Observable<PanoramaApi> {
+    return this.http.get<PanoramaApi>(`${this.base}/panorama/`);
   }
 }
