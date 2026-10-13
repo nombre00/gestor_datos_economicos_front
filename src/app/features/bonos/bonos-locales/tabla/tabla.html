@@ -1,1 +1,60 @@
-<p>tabla works!</p>
+<section class="tabla-bonos">
+  <div class="tabla-bonos__cabecera">
+    <h2>Detalle de bonos</h2>
+    <label class="tabla-bonos__filtro">
+      <input type="checkbox" [checked]="soloVigentes()" (change)="alternarVigentes($event)" />
+      Solo vigentes
+    </label>
+  </div>
+
+  @if (datos() === undefined) {
+    <p class="estado">Cargando…</p>
+  } @else if (datos() === null) {
+    <p class="estado">No se pudieron cargar los bonos.</p>
+  } @else {
+    <div class="tabla-bonos__contenedor">
+      <table>
+        <thead>
+          <tr>
+            <th>Bono</th>
+            <th>Tipo</th>
+            <th>Año</th>
+            <th>Emisión</th>
+            <th>Vencimiento</th>
+            <th class="num">Monto</th>
+            <th>Unidad</th>
+            <th class="num">Tasa (%)</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (b of filas(); track b.nombre_bono + b.fecha_emision + b.fecha_vencimiento + b.anio) {
+            <tr>
+              <td>
+                {{ b.nombre_bono }}
+                @if (b.es_reapertura) {
+                  <span class="etiqueta">Reapertura</span>
+                }
+              </td>
+              <td>{{ b.tipo.toUpperCase() }}</td>
+              <td>{{ b.anio }}</td>
+              <td>{{ fecha(b.fecha_emision) }}</td>
+              <td>{{ fecha(b.fecha_vencimiento) }}</td>
+              <td class="num">
+                {{ numero(b.monto) }}
+                @if (!b.monto_es_colocado) {
+                  <sup title="Monto emitido (no hay dato de monto colocado)">*</sup>
+                }
+              </td>
+              <td>{{ unidadMonto(b) }}</td>
+              <td class="num">{{ numero(b.tasa_caratula) }}</td>
+              <td>{{ b.status_etiqueta }}</td>
+            </tr>
+          } @empty {
+            <tr><td colspan="9" class="estado">Sin bonos para mostrar.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

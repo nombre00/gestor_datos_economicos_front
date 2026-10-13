@@ -1,1 +1,16 @@
-<p>grafico-vencimientos works!</p>
+@if (datos(); as d) {
+  <app-barras-apiladas
+    [categorias]="d.categorias"
+    [series]="d.series"
+    titulo="Monto vigente que vence por año"
+    [etiquetaY]="etiquetaClp()" />
+  <app-barras-apiladas
+    [categorias]="d.categorias"
+    [series]="serieBtu()"
+    titulo="BTU que vencen por año (unidad nativa)"
+    etiquetaY="Miles de UF" />
+} @else if (datos() === null) {
+  <p class="estado">No se pudieron cargar los vencimientos.</p>
+} @else {
+  <p class="estado">Cargando…</p>
+}

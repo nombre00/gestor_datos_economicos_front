@@ -1,1 +1,12 @@
-<p>grafico-tasa-plazo works!</p>
+@if (puntos(); as p) {
+  <app-dispersion
+    [puntos]="p"
+    titulo="Tasa carátula según plazo"
+    etiquetaX="Plazo al emitir (años)"
+    etiquetaY="Tasa carátula (%)"
+    etiquetaColor="Tipo" />
+} @else if (puntos() === null) {
+  <p class="estado">No se pudo cargar la tasa.</p>
+} @else {
+  <p class="estado">Cargando…</p>
+}

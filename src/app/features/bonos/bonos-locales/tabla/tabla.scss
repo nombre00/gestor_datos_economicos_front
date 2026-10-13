@@ -1,0 +1,58 @@
+.tabla-bonos {
+  margin-top: 2rem;
+
+  &__cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  &__filtro {
+    color: var(--color-texto-secundario);
+    cursor: pointer;
+  }
+
+  &__contenedor {
+    overflow-x: auto;
+    border: 1px solid var(--color-borde);
+    border-radius: 8px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  th,
+  td {
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--color-borde);
+    white-space: nowrap;
+  }
+
+  th {
+    color: var(--color-texto-secundario);
+    font-weight: 600;
+  }
+
+  .num {
+    text-align: right;
+  }
+
+  .etiqueta {
+    margin-left: 0.4rem;
+    padding: 0.1rem 0.4rem;
+    font-size: 0.75rem;
+    border-radius: 4px;
+    background: var(--color-acento);
+    color: #fff;
+  }
+
+  sup {
+    cursor: help;
+    color: var(--color-acento);
+  }
+}
