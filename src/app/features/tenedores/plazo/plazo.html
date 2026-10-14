@@ -14,6 +14,16 @@
     titulo="Participación de cada plazo"
     etiquetaY="% del total"
   />
+
+  <app-tabla-datos
+    [categorias]="d.categorias"
+    [series]="d.series"
+    titulo="Corto vs largo plazo por trimestre"
+    etiquetaCategoria="Trimestre"
+    unidad="miles de millones de CLP"
+    [mostrarTotal]="true"
+    nombreArchivo="tenedores_plazo" 
+  />
 } @else if (datos() === null) {
   <p>No se pudo cargar el gráfico. ¿Está corriendo el backend?</p>
 } @else {

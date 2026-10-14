@@ -7,6 +7,15 @@
     titulo="Deuda bruta por acreedor"
     etiquetaY="Millones de USD"
   />
+
+  <app-tabla-datos
+    [categorias]="d.categorias"
+    [series]="d.series"
+    titulo="Deuda por acreedor"
+    unidad="millones de USD"
+    [mostrarTotal]="true"
+    nombreArchivo="composicion_acreedor" 
+  />
 } @else if (datos() === null) {
   <p>No se pudo cargar el gráfico. ¿Está corriendo el backend?</p>
 } @else {

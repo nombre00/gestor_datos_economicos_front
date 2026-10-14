@@ -5,6 +5,14 @@
     titulo="Evolución de la deuda bruta y neta"
     etiquetaY="Millones de USD"
   />
+
+  <app-tabla-datos
+    [categorias]="d.categorias"
+    [series]="d.series"
+    titulo="Deuda bruta y neta por año"
+    unidad="millones de USD"
+    nombreArchivo="deuda_bruta_neta" 
+  />
 } @else if (datos() === null) {
   <p>No se pudo cargar el gráfico. ¿Está corriendo el backend?</p>
 } @else {

@@ -1,0 +1,51 @@
+<section class="tabla-datos">
+  <div class="tabla-datos__cabecera">
+    <button
+      type="button"
+      class="tabla-datos__boton"
+      (click)="alternar()"
+      [attr.aria-expanded]="abierta()">
+      {{ abierta() ? '▾ Ocultar datos' : '▸ Ver datos' }}: {{ titulo() }}
+    </button>
+    <button
+      type="button"
+      class="tabla-datos__boton tabla-datos__boton--secundario"
+      (click)="descargarCsv()">
+      Descargar CSV
+    </button>
+  </div>
+
+  @if (abierta()) {
+    @if (unidad()) {
+      <p class="tabla-datos__unidad">Cifras en {{ unidad() }}</p>
+    }
+    <div class="tabla-datos__contenedor">
+      <table>
+        <thead>
+          <tr>
+            <th>{{ etiquetaCategoria() }}</th>
+            @for (s of series(); track s.nombre) {
+              <th class="num">{{ s.nombre }}</th>
+            }
+            @if (mostrarTotal()) {
+              <th class="num">Total</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (f of filas(); track f.categoria) {
+            <tr>
+              <td>{{ f.categoria }}</td>
+              @for (v of f.valores; track $index) {
+                <td class="num">{{ numero(v) }}</td>
+              }
+              @if (mostrarTotal()) {
+                <td class="num total">{{ numero(f.total) }}</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

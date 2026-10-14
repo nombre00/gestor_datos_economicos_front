@@ -40,6 +40,16 @@
     <app-dona [datos]="donaMoneda()" titulo="Stock vigente por moneda" unidad="millones de CLP" />
     <app-dona [datos]="donaMercado()" titulo="Stock vigente por mercado" unidad="millones de CLP" />
   </section>
+
+  <div></div>
+  
+  <app-tabla-datos
+    [categorias]="d.vencimientos.categorias"
+    [series]="seriesVencimientos()"
+    titulo="Vencimientos por año"
+    unidad="millones de CLP a la fecha de corte"
+    [mostrarTotal]="true"
+    nombreArchivo="panorama_vencimientos" />
 } @else if (datos() === null) {
   <p class="estado">No se pudo cargar el panorama.</p>
 } @else {

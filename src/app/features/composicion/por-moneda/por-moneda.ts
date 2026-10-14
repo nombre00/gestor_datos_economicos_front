@@ -3,10 +3,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, of } from 'rxjs';
 import { AreaApilada } from '../../../shared/graficos/area-apilada/area-apilada';
 import { ComposicionService } from '../../../core/services/composicion';
+import { TablaDatos } from '../../../shared/components/tabla-datos/tabla-datos';
 
 @Component({
   selector: 'app-por-moneda',
-  imports: [AreaApilada],
+  imports: [AreaApilada, TablaDatos],
   templateUrl: './por-moneda.html',
   styleUrl: './por-moneda.scss',
 })

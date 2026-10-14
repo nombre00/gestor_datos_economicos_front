@@ -5,6 +5,7 @@ import { catchError, of } from 'rxjs';
 import { BonosService } from '../../../core/services/bonos';
 import { BarrasApiladas, SerieBarras } from '../../../shared/graficos/barras-apiladas/barras-apiladas';
 import { Dona, DatoDona } from '../../../shared/graficos/dona/dona';
+import { TablaDatos } from '../../../shared/components/tabla-datos/tabla-datos';
 
 const COLOR = {
   usd: '#5470c6',
@@ -42,7 +43,7 @@ const COLOR_MERCADO: Record<string, string> = {
 @Component({
   selector: 'app-panorama',
   standalone: true,
-  imports: [BarrasApiladas, Dona],
+  imports: [BarrasApiladas, Dona, TablaDatos],
   templateUrl: './panorama.html',
   styleUrl: './panorama.scss',
 })

@@ -1,0 +1,72 @@
+.tabla-datos {
+  margin: 1rem 0 2rem;
+
+  &__cabecera {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  &__boton {
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--color-borde);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--color-texto);
+    font: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+
+    &:hover {
+      border-color: var(--color-acento);
+    }
+
+    &--secundario {
+      color: var(--color-acento);
+    }
+  }
+
+  &__unidad {
+    margin: 0.75rem 0 0.5rem;
+    color: var(--color-texto-secundario);
+    font-size: 0.85rem;
+  }
+
+  &__contenedor {
+    max-height: 420px;
+    overflow: auto;
+    border: 1px solid var(--color-borde);
+    border-radius: 8px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+
+  th,
+  td {
+    padding: 0.4rem 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--color-borde);
+    white-space: nowrap;
+  }
+
+  th {
+    position: sticky;
+    top: 0;
+    background: var(--color-fondo);
+    color: var(--color-texto-secundario);
+    font-weight: 600;
+  }
+
+  .num {
+    text-align: right;
+  }
+
+  .total {
+    font-weight: 600;
+  }
+}
