@@ -45,3 +45,60 @@
   gap: 1.5rem;
   margin-top: 2rem;
 }
+
+.supuestos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+  padding: 1rem;
+  margin: 2rem 0 1rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+
+  &__titulo {
+    width: 100%;
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  &__campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    color: var(--color-texto-secundario);
+    font-size: 0.85rem;
+
+    input {
+      width: 8rem;
+      padding: 0.35rem 0.5rem;
+      border: 1px solid var(--color-borde);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--color-texto);
+      font: inherit;
+    }
+  }
+
+  &__botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
+
+  &__boton {
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--color-borde);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--color-acento);
+    font: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+
+    &:hover {
+      border-color: var(--color-acento);
+    }
+  }
+}

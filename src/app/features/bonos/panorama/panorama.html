@@ -36,13 +36,6 @@
     titulo="Monto que vence por año"
     etiquetaY="Millones de CLP (a fecha de corte)" />
 
-  <section class="composicion">
-    <app-dona [datos]="donaMoneda()" titulo="Stock vigente por moneda" unidad="millones de CLP" />
-    <app-dona [datos]="donaMercado()" titulo="Stock vigente por mercado" unidad="millones de CLP" />
-  </section>
-
-  <div></div>
-  
   <app-tabla-datos
     [categorias]="d.vencimientos.categorias"
     [series]="seriesVencimientos()"
@@ -50,6 +43,66 @@
     unidad="millones de CLP a la fecha de corte"
     [mostrarTotal]="true"
     nombreArchivo="panorama_vencimientos" />
+
+  <section class="supuestos">
+    <h2 class="supuestos__titulo">Supuestos para llevar todas las tasas a pesos</h2>
+
+    <label class="supuestos__campo">
+      Inflación promedio esperada Chile (%)
+      <input type="number" step="0.1" [min]="limiteMin" [max]="limiteMax"
+             [value]="inflacionChile()" (input)="actualizar('chile', $event)" />
+    </label>
+
+    <label class="supuestos__campo">
+      Inflación promedio esperada EE.UU. (%)
+      <input type="number" step="0.1" [min]="limiteMin" [max]="limiteMax"
+             [value]="inflacionUsa()" (input)="actualizar('usa', $event)" />
+    </label>
+
+    <label class="supuestos__campo">
+      Inflación promedio esperada zona euro (%)
+      <input type="number" step="0.1" [min]="limiteMin" [max]="limiteMax"
+             [value]="inflacionEuro()" (input)="actualizar('euro', $event)" />
+    </label>
+
+    <div class="supuestos__botones">
+      <button type="button" class="supuestos__boton" (click)="usarValoresActuales()">Inflación actual</button>
+      <button type="button" class="supuestos__boton" (click)="usarMetas()">Metas de bancos centrales</button>
+    </div>
+  </section>
+
+  @if (costo(); as c) {
+    <app-barras-apiladas
+      [categorias]="c.categorias"
+      [series]="serieCosto()"
+      titulo="Costo de la deuda que vence cada año, en pesos"
+      [subtitulo]="textoSupuestos()"
+      etiquetaY="Tasa nominal equivalente en pesos"
+      unidadY="%"
+      [decimales]="2" />
+
+    <p class="nota">
+      Cada barra es el costo promedio, ponderado por monto, de toda la deuda en bonos que vence ese año,
+      expresado como tasa nominal en pesos. BTU: tasa real más la inflación esperada de Chile. Bonos en
+      dólares y euros: su tasa más la depreciación esperada del peso, calculada como la diferencia entre
+      la inflación de Chile y la de EE.UU. o la zona euro. Pasa el mouse sobre una barra para ver el monto
+      que vence y el detalle por moneda. Bonos externos: rendimiento de emisión; bonos locales: tasa
+      carátula (aproximación).
+    </p>
+
+    <app-tabla-datos
+      [categorias]="c.categorias"
+      [series]="tablaCosto()"
+      titulo="Costo en pesos por año y moneda"
+      unidad="% anual nominal en pesos"
+      [decimales]="2"
+      nombreArchivo="panorama_costo_pesos" />
+  }
+
+  <section class="composicion">
+    <app-dona [datos]="donaMoneda()" titulo="Stock vigente por moneda" unidad="millones de CLP" />
+    <app-dona [datos]="donaMercado()" titulo="Stock vigente por mercado" unidad="millones de CLP" />
+  </section>
 } @else if (datos() === null) {
   <p class="estado">No se pudo cargar el panorama.</p>
 } @else {

@@ -74,6 +74,7 @@ export interface PanoramaApi {
   fecha_corte: string;
   indicadores: { uf: IndicadorCorteApi; dolar: IndicadorCorteApi; euro: IndicadorCorteApi };
   vencimientos: DatosGraficoApi;
+  tasas: { categorias: string[]; series: SerieTasaApi[] };
   composicion_moneda: DatoComposicionApi[];
   composicion_mercado: DatoComposicionApi[];
   cifras: {
@@ -81,6 +82,12 @@ export interface PanoramaApi {
     tramos: { anios: number; monto: number; pct: number }[];
     vida_media: number;
   };
+}
+
+export interface SerieTasaApi {
+  nombre: string;
+  datos: (number | null)[];
+  montos: number[];
 }
 
 
@@ -102,7 +109,7 @@ export class BonosService {
     return this.http.get<PuntoSpreadApi[]>(`${this.base}/externos/spread/`);
   }
 
-    obtenerLocales(): Observable<BonoLocalApi[]> {
+  obtenerLocales(): Observable<BonoLocalApi[]> {
     return this.http.get<BonoLocalApi[]>(`${this.base}/locales/`);
   }
 
