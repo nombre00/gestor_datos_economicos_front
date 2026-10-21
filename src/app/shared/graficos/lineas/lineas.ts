@@ -6,6 +6,7 @@ import { ThemeService } from '../../../core/services/theme';
 export interface SerieLineas {
   nombre: string;
   datos: (number | null)[];
+  color?: string;
 }
 
 @Component({
@@ -19,6 +20,9 @@ export class Lineas {
   readonly series = input.required<SerieLineas[]>();
   readonly titulo = input<string>('');
   readonly etiquetaY = input<string>('');
+  /** null = formato por defecto de ECharts (comportamiento anterior) */
+  readonly decimales = input<number | null>(null);
+  readonly unidadY = input<string>('');
 
   private readonly tema = inject(ThemeService);
 
@@ -26,6 +30,16 @@ export class Lineas {
     const oscuro = this.tema.esOscuro();
     const colorTexto = oscuro ? '#e8e8e8' : '#1a1a1a';
     const colorLinea = oscuro ? '#333333' : '#e0e0e0';
+
+    const decimales = this.decimales();
+    const unidad = this.unidadY();
+    const conFormato = decimales !== null || unidad !== '';
+    const formato = new Intl.NumberFormat('es-CL', {
+      minimumFractionDigits: decimales ?? 0,
+      maximumFractionDigits: decimales ?? 2,
+    });
+    const formatear = (v: unknown) =>
+      v === null || v === undefined || Number.isNaN(Number(v)) ? '—' : `${formato.format(Number(v))}${unidad}`;
 
     return {
       backgroundColor: 'transparent',
@@ -35,13 +49,14 @@ export class Lineas {
         left: 'center',
         textStyle: { color: colorTexto },
       },
-      tooltip: { trigger: 'axis' },
+      tooltip: conFormato ? { trigger: 'axis', valueFormatter: formatear } : { trigger: 'axis' },
       legend: {
         bottom: 0,
         icon: 'roundRect',
         textStyle: { color: colorTexto },
       },
-      grid: { left: 90, right: 20, top: 60, bottom: 70 },
+      // right 30 = mismo margen que barras-apiladas, para alinear años entre gráficos
+      grid: { left: 90, right: 30, top: 60, bottom: 70 },
       xAxis: {
         type: 'category',
         data: this.categorias(),
@@ -52,6 +67,7 @@ export class Lineas {
         name: this.etiquetaY(),
         nameLocation: 'middle',
         nameGap: 65,
+        axisLabel: conFormato ? { formatter: formatear } : undefined,
         splitLine: { lineStyle: { color: colorLinea } },
       },
       series: this.series().map((s) => ({
@@ -59,6 +75,8 @@ export class Lineas {
         type: 'line',
         showSymbol: false,
         data: s.datos,
+        itemStyle: s.color ? { color: s.color } : undefined,
+        lineStyle: s.color ? { color: s.color } : undefined,
       })),
     };
   });

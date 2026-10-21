@@ -1,0 +1,55 @@
+<section class="financiamiento">
+  <h2>Financiamiento: deuda emitida vs deuda pagada</h2>
+  <p class="nota">
+    Cada año el Fisco emite deuda nueva (barras hacia arriba) y paga la que vence (barras hacia abajo).
+    La diferencia es el endeudamiento neto, que cubre el déficit. Gobierno Central Total, % del PIB. Fuente: DIPRES.
+  </p>
+
+  @if (datos(); as d) {
+    <div class="cifras">
+      <div class="cifra">
+        <span class="cifra__etiqueta">Deuda emitida {{ d.cifras.anio }}</span>
+        <span class="cifra__valor">{{ pct(d.cifras.emision) }}</span>
+        <span class="cifra__detalle">del PIB</span>
+      </div>
+
+      <div class="cifra">
+        <span class="cifra__etiqueta">Deuda amortizada {{ d.cifras.anio }}</span>
+        <span class="cifra__valor">{{ pct(d.cifras.amortizacion) }}</span>
+        <span class="cifra__detalle">del PIB</span>
+      </div>
+
+      <div class="cifra cifra--destacada">
+        <span class="cifra__etiqueta">Endeudamiento neto {{ d.cifras.anio }}</span>
+        <span class="cifra__valor">{{ pctSigno(d.cifras.neto) }}</span>
+        <span class="cifra__detalle">del PIB · balance fiscal {{ pctSigno(d.cifras.balance) }}</span>
+      </div>
+
+      <div class="cifra">
+        <span class="cifra__etiqueta">Refinanciamiento</span>
+        <span class="cifra__valor">{{ entero(d.cifras.pct_refinanciamiento) }} de 100</span>
+        <span class="cifra__detalle">pesos emitidos se usaron para pagar deuda que vencía</span>
+      </div>
+    </div>
+
+    <app-barras-apiladas
+      [categorias]="d.categorias"
+      [series]="series()"
+      titulo="Deuda emitida (arriba) y amortizada (abajo) por año"
+      etiquetaY="% del PIB"
+      [decimales]="1"
+      unidadY="%" />
+
+    <app-tabla-datos
+      [categorias]="d.categorias"
+      [series]="tabla()"
+      titulo="Financiamiento por año"
+      unidad="% del PIB (amortizaciones en negativo)"
+      [decimales]="2"
+      nombreArchivo="financiamiento" />
+  } @else if (datos() === null) {
+    <p class="estado">No se pudo cargar el financiamiento.</p>
+  } @else {
+    <p class="estado">Cargando…</p>
+  }
+</section>

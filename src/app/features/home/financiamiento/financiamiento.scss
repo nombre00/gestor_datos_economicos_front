@@ -1,0 +1,44 @@
+.financiamiento {
+  margin-top: 2.5rem;
+}
+
+.nota {
+  color: var(--color-texto-secundario);
+  font-size: 0.9rem;
+  margin-bottom: 1.25rem;
+}
+
+.cifras {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.cifra {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+
+  &--destacada {
+    border-color: var(--color-acento);
+  }
+
+  &__etiqueta {
+    color: var(--color-texto-secundario);
+    font-size: 0.85rem;
+  }
+
+  &__valor {
+    font-size: 1.6rem;
+    font-weight: 600;
+  }
+
+  &__detalle {
+    color: var(--color-texto-secundario);
+    font-size: 0.8rem;
+  }
+}

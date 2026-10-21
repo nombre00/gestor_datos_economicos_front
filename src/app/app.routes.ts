@@ -8,6 +8,7 @@ import { Plazo } from './features/tenedores/plazo/plazo';
 import { BonosExternos } from './features/bonos/bonos-externos/bonos-externos';
 import { BonosLocales } from './features/bonos/bonos-locales/bonos-locales';
 import { Panorama } from './features/bonos/panorama/panorama';
+import { EjecucionFiscal } from './features/presupuesto/ejecucion-fiscal/ejecucion-fiscal';
 
 export const routes: Routes = [
   {
@@ -22,6 +23,7 @@ export const routes: Routes = [
       { path: 'bonos/externos', component: BonosExternos },
       { path: 'bonos/locales', component: BonosLocales },
       { path: 'bonos/panorama', component: Panorama },
+      { path: 'presupuesto/ejecucion-fiscal', component: EjecucionFiscal },
     ],
   },
 ];

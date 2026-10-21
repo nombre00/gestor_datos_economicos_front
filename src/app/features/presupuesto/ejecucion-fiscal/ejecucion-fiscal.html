@@ -1,0 +1,149 @@
+<h1>Ejecución fiscal</h1>
+<p class="nota">
+  Estado de Operaciones del Gobierno Central Total (presupuestario + extrapresupuestario), 1990-2025.
+  Fuente: Dirección de Presupuestos (DIPRES).
+</p>
+
+<div class="selector" role="group" aria-label="Unidad">
+  @for (u of unidades; track u.valor) {
+    <button
+      type="button"
+      class="selector__opcion"
+      [class.selector__opcion--activa]="unidad() === u.valor"
+      (click)="unidad.set(u.valor)">
+      {{ u.etiqueta }}
+    </button>
+  }
+</div>
+
+@if (datos(); as d) {
+  <section class="cifras">
+    <div class="cifra cifra--destacada">
+      <span class="cifra__etiqueta">Balance {{ d.cifras.anio }}</span>
+      <span class="cifra__valor">{{ monto(d.cifras.balance, true) }}</span>
+      <span class="cifra__detalle">
+        {{ detalleMonto() }}
+        @if (!esPct()) { · {{ pctPib(d.cifras.balance_pct_pib) }} del PIB }
+      </span>
+    </div>
+
+    <div class="cifra">
+      <span class="cifra__etiqueta">Balance promedio desde {{ d.cifras.balance_promedio_desde }}</span>
+      <span class="cifra__valor">{{ pctPib(d.cifras.balance_promedio_pct_pib) }}</span>
+      <span class="cifra__detalle">del PIB por año</span>
+    </div>
+
+    <div class="cifra">
+      <span class="cifra__etiqueta">Mayor déficit</span>
+      <span class="cifra__valor">{{ pctPib(d.cifras.peor_balance_pct_pib) }}</span>
+      <span class="cifra__detalle">del PIB, en {{ d.cifras.peor_anio }}</span>
+    </div>
+
+    <div class="cifra">
+      <span class="cifra__etiqueta">Último superávit</span>
+      @if (d.cifras.ultimo_superavit_anio) {
+        <span class="cifra__valor">{{ d.cifras.ultimo_superavit_anio }}</span>
+        <span class="cifra__detalle">{{ pctPib(d.cifras.ultimo_superavit_pct_pib) }} del PIB</span>
+      } @else {
+        <span class="cifra__valor">—</span>
+      }
+    </div>
+
+    <div class="cifra">
+      <span class="cifra__etiqueta">Intereses {{ d.cifras.anio }}</span>
+      <span class="cifra__valor">{{ monto(d.cifras.intereses) }}</span>
+      <span class="cifra__detalle">
+        {{ detalleMonto() }} · {{ porcentaje(d.cifras.intereses_pct_ingresos) }} de los ingresos
+      </span>
+    </div>
+  </section>
+
+  <app-lineas
+    [categorias]="d.categorias"
+    [series]="seriesIngresosGastos()"
+    titulo="Ingresos y gastos del Gobierno Central"
+    [etiquetaY]="etiquetaUnidad()"
+    [decimales]="decimales()"
+    [unidadY]="unidadY()" />
+
+  <app-barras-apiladas
+    [categorias]="d.categorias"
+    [series]="seriesBalance()"
+    titulo="Balance efectivo (superávit / déficit)"
+    [etiquetaY]="etiquetaUnidad()"
+    [decimales]="decimales()"
+    [unidadY]="unidadY()" />
+
+  <app-tabla-datos
+    [categorias]="d.categorias"
+    [series]="tablaIngresosGastos()"
+    titulo="Ingresos, gastos y balance por año"
+    [unidad]="etiquetaUnidad()"
+    [decimales]="decimales()"
+    nombreArchivo="ejecucion_fiscal_balance" />
+
+  <app-area-apilada
+    [categorias]="d.categorias"
+    [series]="seriesIngresos()"
+    titulo="Ingresos por fuente"
+    [etiquetaY]="etiquetaUnidad()"
+    [decimales]="decimales()"
+    [unidadY]="unidadY()" />
+
+  <app-tabla-datos
+    [categorias]="d.categorias"
+    [series]="seriesIngresos()"
+    titulo="Ingresos por fuente"
+    [unidad]="etiquetaUnidad()"
+    [decimales]="decimales()"
+    [mostrarTotal]="true"
+    nombreArchivo="ejecucion_fiscal_ingresos" />
+
+  <app-area-apilada
+    [categorias]="d.categorias"
+    [series]="seriesGastos()"
+    titulo="Gastos por tipo"
+    [etiquetaY]="etiquetaUnidad()"
+    [decimales]="decimales()"
+    [unidadY]="unidadY()" />
+
+  <app-tabla-datos
+    [categorias]="d.categorias"
+    [series]="seriesGastos()"
+    titulo="Gastos por tipo"
+    [unidad]="etiquetaUnidad()"
+    [decimales]="decimales()"
+    [mostrarTotal]="true"
+    nombreArchivo="ejecucion_fiscal_gastos" />
+
+  <app-lineas
+    [categorias]="d.categorias"
+    [series]="seriesIntereses()"
+    titulo="Gasto en intereses de la deuda"
+    [etiquetaY]="etiquetaUnidad()"
+    [decimales]="decimales()"
+    [unidadY]="unidadY()" />
+
+  <app-lineas
+    [categorias]="d.categorias"
+    [series]="seriesInteresesRatio()"
+    titulo="Intereses como porcentaje de los ingresos"
+    etiquetaY="% de los ingresos totales"
+    [decimales]="1"
+    unidadY="%" />
+
+  <p class="nota">
+    Qué parte de lo que recauda el Fisco se va en pagar intereses. No depende de la unidad elegida.
+  </p>
+
+  <app-tabla-datos
+    [categorias]="d.categorias"
+    [series]="tablaIntereses()"
+    titulo="Intereses por año"
+    [decimales]="1"
+    nombreArchivo="ejecucion_fiscal_intereses" />
+} @else if (datos() === null) {
+  <p class="estado">No se pudo cargar la ejecución fiscal.</p>
+} @else {
+  <p class="estado">Cargando…</p>
+}

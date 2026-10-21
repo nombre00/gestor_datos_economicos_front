@@ -5,7 +5,8 @@ import { ThemeService } from '../../../core/services/theme';
 
 export interface SerieGrafico {
   nombre: string;
-  datos: number[];
+  datos: (number | null)[];
+  color?: string;
 }
 
 @Component({
@@ -20,6 +21,9 @@ export class AreaApilada {
   readonly titulo = input<string>('');
   readonly etiquetaY = input<string>('');
   readonly modo = input<'absoluto' | 'porcentaje'>('absoluto');
+  /** null = comportamiento anterior (eje sin decimales, tooltip hasta 1 decimal) */
+  readonly decimales = input<number | null>(null);
+  readonly unidadY = input<string>('');
 
   private readonly tema = inject(ThemeService);
 
@@ -30,11 +34,13 @@ export class AreaApilada {
       return series;
     }
     const totales = this.categorias().map((_, i) =>
-      series.reduce((suma, s) => suma + s.datos[i], 0),
+      series.reduce((suma, s) => suma + (s.datos[i] ?? 0), 0),
     );
     return series.map((s) => ({
-      nombre: s.nombre,
-      datos: s.datos.map((valor, i) => (totales[i] > 0 ? (valor / totales[i]) * 100 : 0)),
+      ...s,
+      datos: s.datos.map((valor, i) =>
+        valor === null ? null : totales[i] > 0 ? (valor / totales[i]) * 100 : 0,
+      ),
     }));
   });
 
@@ -42,6 +48,18 @@ export class AreaApilada {
     const oscuro = this.tema.esOscuro();
     const colorTexto = oscuro ? '#e8e8e8' : '#1a1a1a';
     const colorLinea = oscuro ? '#333333' : '#e0e0e0';
+
+    const decimales = this.decimales();
+    const unidad = this.unidadY();
+    const formatoTooltip = new Intl.NumberFormat('es-CL', {
+      minimumFractionDigits: decimales ?? 0,
+      maximumFractionDigits: decimales ?? 1,
+    });
+    const formatoEje = new Intl.NumberFormat('es-CL', {
+      minimumFractionDigits: decimales ?? 0,
+      maximumFractionDigits: decimales ?? 0,
+    });
+    const esVacio = (v: unknown) => v === null || v === undefined || Number.isNaN(Number(v));
 
     return {
       backgroundColor: 'transparent',
@@ -54,7 +72,7 @@ export class AreaApilada {
       tooltip: {
         trigger: 'axis',
         valueFormatter: (valor: unknown) =>
-          Number(valor).toLocaleString('es-CL', { maximumFractionDigits: 1 }),
+          esVacio(valor) ? '—' : `${formatoTooltip.format(Number(valor))}${unidad}`,
       },
       legend: {
         bottom: 0,
@@ -75,7 +93,7 @@ export class AreaApilada {
         nameGap: 65,
         max: this.modo() === 'porcentaje' ? 100 : undefined,
         axisLabel: {
-          formatter: (valor: unknown) => Number(valor).toLocaleString('es-CL'),
+          formatter: (valor: unknown) => `${formatoEje.format(Number(valor))}${unidad}`,
         },
         splitLine: { lineStyle: { color: colorLinea } },
       },
@@ -83,7 +101,9 @@ export class AreaApilada {
         name: s.nombre,
         type: 'line',
         stack: 'total',
-        areaStyle: {},
+        areaStyle: s.color ? { color: s.color } : {},
+        itemStyle: s.color ? { color: s.color } : undefined,
+        lineStyle: s.color ? { color: s.color } : undefined,
         showSymbol: false,
         data: s.datos,
       })),

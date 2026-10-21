@@ -25,7 +25,7 @@
     margin-bottom: 0.25rem;
   }
 
-    &__tema {
+  &__tema {
     margin-top: auto;
     padding: 0.5rem 0.75rem;
     background: transparent;
@@ -44,6 +44,7 @@ nav {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  margin-bottom: 1.5rem;
 
   a {
     color: var(--color-texto);
@@ -59,6 +60,46 @@ nav {
       background-color: var(--color-acento);
       color: white;
     }
+  }
+}
+
+.grupo {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-borde);
+
+  &__titulo {
+    list-style: none;   // quita el triángulo por defecto del navegador
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-texto);
+    padding: 0.25rem 0;
+    user-select: none;
+
+    &::-webkit-details-marker {
+      display: none;   // Safari
+    }
+
+    &::before {
+      content: '▸';
+      display: inline-block;
+      margin-right: 0.4rem;
+      transition: transform 0.15s;
+    }
+  }
+
+  &[open] > .grupo__titulo::before {
+    transform: rotate(90deg);
+  }
+
+  &__contenido {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 0.25rem;
   }
 }
 

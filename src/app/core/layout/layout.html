@@ -1,21 +1,33 @@
 <div class="layout">
   <aside class="sidebar">
-    <h1 class="sidebar__titulo">Deuda Pública Chile</h1>
+    <h1 class="sidebar__titulo">Finanzas Públicas de Chile</h1>
     <nav>
       <a routerLink="/" routerLinkActive="activo" [routerLinkActiveOptions]="{ exact: true }">Home</a>
 
-      <span class="sidebar__seccion">Composición</span>
-      <a routerLink="/composicion/moneda" routerLinkActive="activo">Por Moneda</a>
-      <a routerLink="/composicion/acreedor" routerLinkActive="activo">Por Acreedor</a>
+      <details class="grupo" open>
+        <summary class="grupo__titulo">Presupuesto Nacional</summary>
+        <div class="grupo__contenido">
+          <a routerLink="/presupuesto/ejecucion-fiscal" routerLinkActive="activo">Ejecución fiscal</a>
+        </div>
+      </details>
 
-      <span class="sidebar__seccion">Tenedores</span>
-      <a routerLink="/tenedores/gobierno" routerLinkActive="activo">Bonos de Gobierno</a>
-      <a routerLink="/tenedores/plazo" routerLinkActive="activo">Corto vs. Largo Plazo</a>
+      <details class="grupo" open>
+        <summary class="grupo__titulo">Deuda Pública</summary>
+        <div class="grupo__contenido">
+          <span class="sidebar__seccion">Composición</span>
+          <a routerLink="/composicion/moneda" routerLinkActive="activo">Por Moneda</a>
+          <a routerLink="/composicion/acreedor" routerLinkActive="activo">Por Acreedor</a>
 
-      <span class="sidebar__seccion">Bonos</span>
-      <a routerLink="/bonos/panorama" routerLinkActive="activo">Panorama</a>
-      <a routerLink="/bonos/externos" routerLinkActive="activo">Bonos Externos</a>
-      <a routerLink="/bonos/locales" routerLinkActive="activo">Bonos Locales</a>
+          <span class="sidebar__seccion">Tenedores</span>
+          <a routerLink="/tenedores/gobierno" routerLinkActive="activo">Bonos de Gobierno</a>
+          <a routerLink="/tenedores/plazo" routerLinkActive="activo">Corto vs. Largo Plazo</a>
+
+          <span class="sidebar__seccion">Bonos</span>
+          <a routerLink="/bonos/panorama" routerLinkActive="activo">Panorama</a>
+          <a routerLink="/bonos/externos" routerLinkActive="activo">Bonos Externos</a>
+          <a routerLink="/bonos/locales" routerLinkActive="activo">Bonos Locales</a>
+        </div>
+      </details>
     </nav>
     <button class="sidebar__tema" (click)="tema.alternar()">
       {{ tema.esOscuro() ? '☀️ Modo claro' : '🌙 Modo oscuro' }}
